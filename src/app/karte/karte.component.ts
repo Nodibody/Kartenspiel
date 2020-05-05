@@ -4,21 +4,23 @@ import { KartenTyp } from '../modelle/KartenTyp';
 @Component({
   selector: 'app-karte',
   templateUrl: './karte.component.html',
-  styleUrls: ['./karte.component.css'],
+  styleUrls: ['./karte.component.scss'],
 })
 export class KarteComponent implements OnInit {
-  @Input() Karte: KartenTyp;
+  @Input() karte: KartenTyp;
   @Output() benutzeKarte: EventEmitter<KartenTyp> = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.karte);
+  }
 
   onClick() {
-    this.benutzeKarte.emit(this.Karte);
+    this.benutzeKarte.emit(this.karte);
   }
 
   getImgPath(): string {
-    return `assets/${this.Karte.color}/${this.Karte.levelString}.png`;
+    return `assets/${this.karte.color}/${this.karte.levelString}.PNG`;
   }
 }

@@ -119,6 +119,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "Kartenspiel"
+    }
+  },
+  "defaultProject": "Kartenspiel",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

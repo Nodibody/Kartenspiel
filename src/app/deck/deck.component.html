@@ -1,1 +1,7 @@
-<p>deck works!</p>
+<div class="deck">
+  <app-karte
+    *ngFor="let karte of karten"
+    [karte]="karte"
+    (benutzeKarte)="benutzeKarte($event)"
+  ></app-karte>
+</div>
