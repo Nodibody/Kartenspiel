@@ -15,6 +15,7 @@ export class DeckComponent implements OnInit {
       { color: 'Herz', levelString: 'Achter', level: 2 },
       { color: 'Herz', levelString: 'Neuner', level: 3 },
       { color: 'Herz', levelString: 'Zehner', level: 4 },
+      { color: 'Eichel', levelString: 'Sau', level: 5 },
     ];
   }
 
