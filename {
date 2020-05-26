@@ -1,0 +1,2 @@
+
+C:\Code\JS\Angular\Kartenspiel>  "C:\Users\pipip\AppData\Roaming\npm\\node.exe"  "C:\Users\pipip\AppData\Roaming\npm\\node_modules\@angular\cli\bin\ng" serve this.sessionService.createSession('Jeff').subscribe((session) =

@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from 'angularfire2/firestore';
 import { SessionService } from '../services/session.service';
-
 @Component({
   selector: 'app-firestore-test',
   templateUrl: './firestore-test.component.html',
@@ -13,13 +8,24 @@ import { SessionService } from '../services/session.service';
 })
 export class FirestoreTestComponent implements OnInit {
   items: Observable<any[]>;
-  exists;
+  info: any;
+  id: string;
+  name = '0';
+
   constructor(private sessionService: SessionService) {}
 
-  ngOnInit(): void {
-    this.items = this.sessionService.sessions;
-    this.sessionService.createSession().subscribe((session) => {
-      this.exists = session.sessionId;
+  ngOnInit(): void {}
+
+  onSubmit() {
+    this.sessionService.joinSession(this.id, this.name).subscribe((session) => {
+      this.sessionService.getCards(this.name).subscribe(console.log);
+    });
+  }
+
+  createSession() {
+    this.sessionService.createSession(this.name).subscribe((session) => {
+      this.info = session.sessionId;
+      this.sessionService.getCards(this.name).subscribe(console.log);
     });
   }
 }
