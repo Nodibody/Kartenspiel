@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "watten-14294": {
+      "hosting": {
+        "Kartenspiel": [
+          "watten-14294"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+<h1 *ngIf="!(afAuth.authState | async)" (click)="logInWithGoogle()">Login</h1>
+<h1 *ngIf="afAuth.authState | async" (click)="logOut()">Logout</h1>

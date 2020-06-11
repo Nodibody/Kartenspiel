@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "Kartenspiel",
+      "public": "dist/Kartenspiel",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
