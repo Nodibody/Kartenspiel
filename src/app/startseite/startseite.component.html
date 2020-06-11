@@ -1,1 +1,27 @@
-<p>startseite works!</p>
+<div class="startseite">
+  <div class="info">
+    <h1>4er-Watten</h1>
+    <h3>Willkommen beim Spiel</h3>
+  </div>
+  <div class="sessions">
+    <mat-form-field appearance="legacy" class="sessionId">
+      <mat-label>Session ID</mat-label>
+      <input
+        matInput
+        [formControl]="sessionIdFC"
+        placeholder="iAWHFJKLASHFIASHFHASDUF"
+      />
+      <mat-hint>Die Session Id um zu joinen</mat-hint>
+      <mat-error>Muss eingefügt werden</mat-error>
+    </mat-form-field>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" (click)="createSession()">
+        Create Session
+      </button>
+      <button mat-raised-button color="accent" (click)="joinSession()">
+        Join Session
+      </button>
+    </div>
+  </div>
+</div>

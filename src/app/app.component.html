@@ -1,1 +1,2 @@
-<app-deck> </app-deck>
+<app-startseite *ngIf="!sessionId"></app-startseite>
+<app-game *ngIf="sessionId"></app-game>
