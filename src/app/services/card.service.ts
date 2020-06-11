@@ -28,6 +28,9 @@ export class CardService {
       this.drawCards(),
     ];
   }
+  public newDeck(): KartenTyp[] {
+    return (this.cards = allCards.map((v) => v));
+  }
 
   public shuffle(): KartenTyp[] {
     let newPos: number;
