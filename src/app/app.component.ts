@@ -19,8 +19,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'Kartenspiel';
-  sessionId: String;
-  host: boolean = false;
+  sessionId: string;
+  host = false;
   testing: boolean;
   constructor(
     private route: ActivatedRoute,
@@ -34,11 +34,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.afAuth.signOut();
     this.route.queryParams.subscribe((params) => {
-      if (params['logout']) this.afAuth.signOut();
-      this.testing = params['testing'];
-      this.host = params['host'];
-      if (params['session']) {
-        this.joinSession(params['session'], true);
+      if (params.logout) this.afAuth.signOut();
+      this.testing = params.testing;
+      this.host = params.host;
+      if (params.session) {
+        this.joinSession(params.session, true);
       }
     });
   }

@@ -9,11 +9,11 @@ export class SiegerauswertungService {
 
   public getWinner(cards: PlayedCardType[], rechter: KartenTyp): string {
     cards = cards.map((card) => {
-      //Linker oder Rechter
+      // Linker oder Rechter
       if (card.level === rechter.level) card.level += 100;
-      //Trumph
+      // Trumph
       if (card.color === rechter.color) card.level += 20;
-      //Farbe der ersten Ausgespielten
+      // Farbe der ersten Ausgespielten
       if (card.color === cards[0].color) card.level += 10;
       return card;
     });

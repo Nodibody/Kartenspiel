@@ -3,13 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-dialog-session-unavailable',
   templateUrl: './dialog-session-unavailable.component.html',
-  styleUrls: ['./dialog-session-unavailable.component.css']
+  styleUrls: ['./dialog-session-unavailable.component.scss'],
 })
 export class DialogSessionUnavailableComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

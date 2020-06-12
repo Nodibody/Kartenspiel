@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 @Component({
   selector: 'app-testing',
   templateUrl: './testing.component.html',
-  styleUrls: ['./testing.component.css'],
+  styleUrls: ['./testing.component.scss'],
 })
 export class TestingComponent implements OnInit {
   constructor(public afAuth: AngularFireAuth) {}

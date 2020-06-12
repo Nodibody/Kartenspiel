@@ -15,14 +15,14 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class SessionService {
   public sessionId: string;
-  private roundNo: number = 0;
+  private roundNo = 0;
   private players: Subject<number> = new Subject<number>();
 
   constructor(
     private afs: AngularFirestore,
     private cardService: CardService
   ) {}
-  //Host 0
+  // Host 0
   public createSession(playerId: string): Observable<Session> {
     return new Observable<Session>((observer) => {
       this.sessionsCollection
@@ -35,7 +35,7 @@ export class SessionService {
         });
     });
   }
-  //Host 1
+  // Host 1
   private waitForFullSession() {
     console.log('Waiting for full session...');
     const sub = this.doc.valueChanges().subscribe((session) => {
@@ -47,7 +47,7 @@ export class SessionService {
       this.startNewRound();
     });
   }
-  //Host 2
+  // Host 2
   public startNewRound(): void {
     of(++this.roundNo)
       .pipe(
@@ -78,7 +78,7 @@ export class SessionService {
       )
       .subscribe(() => this.sendCardsToServer(this.cardService.drawAllCards()));
   }
-  //Host 3
+  // Host 3
   private sendCardsToServer(cards: KartenTyp[][]) {
     this.session
       .pipe(
@@ -95,7 +95,7 @@ export class SessionService {
       .subscribe(() => {});
   }
 
-  //Client 0 | not Host
+  // Client 0 | not Host
   public joinSession(
     sessionId: string,
     playerId: string
@@ -113,7 +113,7 @@ export class SessionService {
       })
     );
   }
-  //Client 1
+  // Client 1
   public getCards(id: string): Observable<KartenTyp[]> {
     return new Observable<KartenTyp[]>((observer) => {
       const sub = this.doc.valueChanges().subscribe((session) => {
@@ -127,11 +127,11 @@ export class SessionService {
       });
     });
   }
-  //Client 2
+  // Client 2
   public isNextPlayer(id: string): Observable<boolean> {
     return this.session.pipe(map((session) => session.nextPlayer === id));
   }
-  //Client 3
+  // Client 3
   public sendPlayedCard(card: KartenTyp, id: string) {
     forkJoin(this.session, this.nextPlayer).subscribe((data) => {
       const session: Session = data[0];
