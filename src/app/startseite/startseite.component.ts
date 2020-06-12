@@ -1,7 +1,5 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { EventEmitter } from 'protractor';
 
 @Component({
   selector: 'app-startseite',
@@ -9,18 +7,26 @@ import { EventEmitter } from 'protractor';
   styleUrls: ['./startseite.component.scss'],
 })
 export class StartseiteComponent implements OnInit {
+  @Output() sessionCreator: EventEmitter<void> = new EventEmitter<void>();
+  @Output() sessionJoiner: EventEmitter<string> = new EventEmitter<string>();
   sessionIdFC: FormControl = new FormControl('', []);
 
-  constructor(private router: Router) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   createSession() {
     this.sessionIdFC.markAsUntouched();
+    this.sessionCreator.emit();
   }
 
   joinSession() {
-    this.sessionIdFC.setErrors({ required: true });
+    if ((this.sessionIdFC.value + '').trim().length === 0) {
+      this.sessionIdFC.setValue('');
+      this.sessionIdFC.setErrors({ required: true });
+    }
     this.sessionIdFC.markAsTouched();
+    if (this.sessionIdFC.hasError('required')) return;
+    this.sessionJoiner.emit(this.sessionIdFC.value + '');
   }
 }

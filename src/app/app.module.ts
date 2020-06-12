@@ -1,27 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
-import { AppRoutingModule } from './app-routing.module';
+import { environment } from '../environments/environment';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 import { AppComponent } from './app.component';
 import { KarteComponent } from './karte/karte.component';
 import { DeckComponent } from './deck/deck.component';
-import { FirestoreTestComponent } from './firestore-test/firestore-test.component';
-
-import { environment } from '../environments/environment';
 import { TestingComponent } from './testing/testing.component';
+import { GameComponent } from './game/game.component';
+import { StartseiteComponent } from './startseite/startseite.component';
+import { DialogSessionUnavailableComponent } from './dialogs/dialog-session-unavailable/dialog-session-unavailable.component';
+import { DialogHostGoneComponent } from './dialogs/dialog-host-gone/dialog-host-gone.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     KarteComponent,
     DeckComponent,
-    FirestoreTestComponent,
     TestingComponent,
+    GameComponent,
+    StartseiteComponent,
+    DialogSessionUnavailableComponent,
+    DialogHostGoneComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +43,13 @@ import { TestingComponent } from './testing/testing.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KartenTyp } from '../modelle/KartenTyp';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-deck',
@@ -7,21 +8,17 @@ import { KartenTyp } from '../modelle/KartenTyp';
   styleUrls: ['./deck.component.scss'],
 })
 export class DeckComponent implements OnInit {
-  karten: KartenTyp[];
-
-  constructor() {
-    this.karten = [
-      { color: 'Herz', levelString: 'König', level: 1 },
-      { color: 'Laub', levelString: 'Achter', level: 2 },
-      { color: 'Herz', levelString: 'Neuner', level: 3 },
-      { color: 'Herz', levelString: 'Zehner', level: 4 },
-      { color: 'Eichel', levelString: 'Sau', level: 5 },
-    ];
-  }
+  @Input() karten: KartenTyp[];
+  @Input() isNextPlayer: boolean;
+  @Output() useCard: EventEmitter<KartenTyp> = new EventEmitter<KartenTyp>();
+  constructor() {}
 
   ngOnInit(): void {}
 
   benutzeKarte(karte) {
+    console.log(this.isNextPlayer);
+    if (!this.isNextPlayer) return;
     this.karten = this.karten.filter((k) => k !== karte);
+    this.useCard.emit(karte);
   }
 }

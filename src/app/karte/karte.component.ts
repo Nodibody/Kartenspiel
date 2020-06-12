@@ -13,7 +13,7 @@ export class KarteComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.karte);
+    // console.log(this.karte);
   }
 
   onClick() {

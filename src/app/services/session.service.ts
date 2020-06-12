@@ -3,11 +3,12 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument,
-} from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
-import { FirestoreSession, Session } from '../modelle/Session';
+} from '@angular/fire/firestore';
+import { Observable, Subject, forkJoin, from, of } from 'rxjs';
+import { Session } from '../modelle/Session';
 import { CardService } from './card.service';
 import { KartenTyp, PlayedCardType } from '../modelle/KartenTyp';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,70 +16,105 @@ import { KartenTyp, PlayedCardType } from '../modelle/KartenTyp';
 export class SessionService {
   public sessionId: string;
   private roundNo: number = 0;
+  private players: Subject<number> = new Subject<number>();
+
   constructor(
     private afs: AngularFirestore,
     private cardService: CardService
   ) {}
-
-  public createSession(playerName: string): Observable<Session> {
+  //Host 0
+  public createSession(playerId: string): Observable<Session> {
     return new Observable<Session>((observer) => {
-      this.sessionsCollection.add({ players: [playerName] }).then((ref) => {
-        this.sessionId = ref.id;
-        observer.next({ sessionId: ref.id });
-        observer.complete();
-        this.waitForFullSession(ref.id);
-      });
-    });
-  }
-
-  public joinSession(
-    sessionId: string,
-    playerName: string
-  ): Observable<Session> {
-    return new Observable<Session>((observer) => {
-      const sub = this.sessionsCollection
-        .doc<FirestoreSession>(this.sessionId)
-        .valueChanges()
-        .subscribe((session) => {
-          sub.unsubscribe();
-          if (!session) {
-            throw new Error('Session unavailable!');
-          }
-          this.sessionId = sessionId;
-          this.doc.update({ players: [playerName, ...session.players] });
-          const sub2 = this.doc.valueChanges().subscribe((s) => {
-            console.log(s.players);
-            sub2.unsubscribe();
-            observer.next({ sessionId, ...s });
-            observer.complete();
-          });
+      this.sessionsCollection
+        .add({ players: [playerId], nextPlayer: playerId })
+        .then((ref) => {
+          this.sessionId = ref.id;
+          observer.next({ sessionId: ref.id });
+          this.waitForFullSession();
+          observer.complete();
         });
     });
   }
-
-  private sendCardsToServer(cards: KartenTyp[][]) {
+  //Host 1
+  private waitForFullSession() {
+    console.log('Waiting for full session...');
     const sub = this.doc.valueChanges().subscribe((session) => {
-      sub.unsubscribe();
-      this.doc.update({
-        cards: session.players.map((player, i) => {
-          return { name: player, cards: cards[i] };
-        }),
-      });
-    });
-  }
-
-  private waitForFullSession(sessionId: string) {
-    const sub = this.doc.valueChanges().subscribe((session) => {
-      console.log(session.players);
-      if (session.players.length !== 4) {
+      this.players.next(session.players.length);
+      if (session.players.length < 4) {
         return;
       }
       sub.unsubscribe();
-      this.sendCardsToServer(this.cardService.drawAllCards());
+      this.startNewRound();
     });
   }
+  //Host 2
+  public startNewRound(): void {
+    of(++this.roundNo)
+      .pipe(
+        map((roundNo) => {
+          switch (roundNo) {
+            case 1:
+              return from(
+                this.doc.update({ roundNo: this.roundNo, round1: [] })
+              );
+            case 2:
+              return from(
+                this.doc.update({ roundNo: this.roundNo, round2: [] })
+              );
+            case 3:
+              return from(
+                this.doc.update({ roundNo: this.roundNo, round3: [] })
+              );
+            case 4:
+              return from(
+                this.doc.update({ roundNo: this.roundNo, round4: [] })
+              );
+            case 5:
+              return from(
+                this.doc.update({ roundNo: this.roundNo, round5: [] })
+              );
+          }
+        })
+      )
+      .subscribe(() => this.sendCardsToServer(this.cardService.drawAllCards()));
+  }
+  //Host 3
+  private sendCardsToServer(cards: KartenTyp[][]) {
+    this.session
+      .pipe(
+        switchMap((session) =>
+          from(
+            this.doc.update({
+              cards: session.players.map((player, i) => {
+                return { name: player, cards: cards[i] };
+              }),
+            })
+          )
+        )
+      )
+      .subscribe(() => {});
+  }
 
-  public getCards(name: string): Observable<KartenTyp[]> {
+  //Client 0 | not Host
+  public joinSession(
+    sessionId: string,
+    playerId: string
+  ): Observable<Session | Error> {
+    this.sessionId = sessionId;
+    return this.session.pipe(
+      map((session) => {
+        if (!session || !session?.players || session?.players?.length >= 4) {
+          throw new Error(`Session unavailable! (${sessionId})`);
+        }
+        session.players.push(playerId);
+        this.doc.update({ players: session.players });
+        this.players.next(session.players.length);
+        return session;
+      })
+    );
+  }
+  //Client 1
+  public getCards(id: string): Observable<KartenTyp[]> {
     return new Observable<KartenTyp[]>((observer) => {
       const sub = this.doc.valueChanges().subscribe((session) => {
         if (!session.cards) {
@@ -86,64 +122,94 @@ export class SessionService {
           return;
         }
         sub.unsubscribe();
-        observer.next(session.cards.filter((v) => v.name === name)[0].cards);
+        observer.next(session.cards.filter((v) => v.name === id)[0].cards);
         observer.complete();
       });
     });
   }
-
-  public startNewRound(): void {
-    this.roundNo++;
-    switch (this.roundNo) {
-      case 1:
-        this.doc.update({ roundNo: this.roundNo, round1: [] });
-        break;
-      case 2:
-        this.doc.update({ roundNo: this.roundNo, round2: [] });
-        break;
-      case 3:
-        this.doc.update({ roundNo: this.roundNo, round3: [] });
-        break;
-      case 4:
-        this.doc.update({ roundNo: this.roundNo, round4: [] });
-        break;
-      case 5:
-        this.doc.update({ roundNo: this.roundNo, round5: [] });
-        break;
-    }
+  //Client 2
+  public isNextPlayer(id: string): Observable<boolean> {
+    return this.session.pipe(map((session) => session.nextPlayer === id));
   }
-  public sendPlayedCard(card: KartenTyp, name: string) {
-    const sub = this.doc.valueChanges().subscribe((session) => {
-      sub.unsubscribe();
-      const playedCard: PlayedCardType = { player: name, ...card };
-
+  //Client 3
+  public sendPlayedCard(card: KartenTyp, id: string) {
+    forkJoin(this.session, this.nextPlayer).subscribe((data) => {
+      const session: Session = data[0];
+      const nextPlayer: string = data[1];
+      const playedCard: PlayedCardType = { player: id, ...card };
       switch (session.roundNo) {
         case 1:
-          this.doc.update({ round1: [playedCard, ...session.round1] });
-          break;
+          return from(
+            this.doc.update({
+              round1: [playedCard, ...session.round1],
+              nextPlayer,
+            })
+          );
         case 2:
-          this.doc.update({ round2: [playedCard, ...session.round2] });
-          break;
+          return from(
+            this.doc.update({
+              round2: [playedCard, ...session.round2],
+              nextPlayer,
+            })
+          );
         case 3:
-          this.doc.update({ round3: [playedCard, ...session.round3] });
-          break;
+          return from(
+            this.doc.update({
+              round3: [playedCard, ...session.round3],
+              nextPlayer,
+            })
+          );
         case 4:
-          this.doc.update({ round4: [playedCard, ...session.round4] });
-          break;
+          return from(
+            this.doc.update({
+              round4: [playedCard, ...session.round4],
+              nextPlayer,
+            })
+          );
         case 5:
-          this.doc.update({ round5: [playedCard, ...session.round5] });
-          break;
+          return from(
+            this.doc.update({
+              round5: [playedCard, ...session.round5],
+              nextPlayer,
+            })
+          );
       }
     });
   }
 
-  get sessionsCollection(): AngularFirestoreCollection<FirestoreSession> {
-    return this.afs.collection<FirestoreSession>('sessions');
+  get sessionsCollection(): AngularFirestoreCollection<Partial<Session>> {
+    return this.afs.collection<Partial<Session>>('sessions');
   }
-  get sessions(): Observable<FirestoreSession[]> {
+  get sessions(): Observable<Partial<Session>[]> {
     return this.sessionsCollection.valueChanges();
   }
-  get doc(): AngularFirestoreDocument<FirestoreSession> {
-    return this.sessionsCollection.doc<FirestoreSession>(this.sessionId);
+  get doc(): AngularFirestoreDocument<Partial<Session>> {
+    return this.sessionsCollection.doc<Partial<Session>>(this.sessionId);
+  }
+  get session(): Observable<Session> {
+    return this.doc.get().pipe(
+      map((snap) => {
+        return { sessionId: snap.id, ...snap.data() };
+      })
+    );
+  }
+  public get playerCount(): Observable<number> {
+    return this.doc
+      .valueChanges()
+      .pipe(map((session) => session.players?.length));
+  }
+  private get nextPlayer(): Observable<string> {
+    return this.doc.get({ source: 'cache' }).pipe(
+      map((snap) => snap.data()),
+      map((session) => {
+        let currentPlayer = session.players.findIndex(
+          (player) => player === session.nextPlayer
+        );
+        if (currentPlayer++ >= session.players.length) {
+          currentPlayer = 0;
+        }
+        return session.players[currentPlayer];
+      })
+    );
   }
 }

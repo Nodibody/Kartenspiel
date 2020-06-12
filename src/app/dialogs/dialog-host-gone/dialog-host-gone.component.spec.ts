@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FirestoreTestComponent } from './firestore-test.component';
+import { DialogHostGoneComponent } from './dialog-host-gone.component';
 
-describe('FirestoreTestComponent', () => {
-  let component: FirestoreTestComponent;
-  let fixture: ComponentFixture<FirestoreTestComponent>;
+describe('DialogHostGoneComponent', () => {
+  let component: DialogHostGoneComponent;
+  let fixture: ComponentFixture<DialogHostGoneComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FirestoreTestComponent ]
+      declarations: [ DialogHostGoneComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FirestoreTestComponent);
+    fixture = TestBed.createComponent(DialogHostGoneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

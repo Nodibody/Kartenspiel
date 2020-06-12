@@ -1,9 +1,7 @@
 import { KartenTyp, PlayedCardType } from './KartenTyp';
 
-export interface Session extends FirestoreSession {
+export interface Session {
   sessionId: string;
-}
-export interface FirestoreSession {
   players?: string[];
   cards?: { name: string; cards: KartenTyp[] }[];
   round1?: PlayedCardType[];
