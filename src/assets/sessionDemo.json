@@ -42,132 +42,136 @@
       ]
     }
   ],
-  "rounds": [
-    [
-      {
-        "color": "Herz",
-        "levelString": "Siebener",
-        "level": 1,
-        "player": ""
-      },
-      {
-        "color": "Herz",
-        "levelString": "Achter",
-        "level": 2,
-        "player": ""
-      },
-      {
-        "color": "Herz",
-        "levelString": "Neuner",
-        "level": 3,
-        "player": ""
-      },
-      {
-        "color": "Herz",
-        "levelString": "Zehner",
-        "level": 4,
-        "player": ""
-      }
-    ],
-    [
-      {
-        "color": "Eichel",
-        "levelString": "Siebener",
-        "level": 1,
-        "player": ""
-      },
-      {
-        "color": "Eichel",
-        "levelString": "Achter",
-        "level": 2,
-        "player": ""
-      },
-      {
-        "color": "Eichel",
-        "levelString": "Neuner",
-        "level": 3,
-        "player": ""
-      },
-      {
-        "color": "Eichel",
-        "levelString": "Zehner",
-        "level": 4,
-        "player": ""
-      }
-    ],
-    [
-      {
-        "color": "Schelle",
-        "levelString": "Sechser",
-        "level": 0,
-        "player": ""
-      },
-      {
-        "color": "Schelle",
-        "levelString": "Siebener",
-        "level": 1,
-        "player": ""
-      },
-      {
-        "color": "Schelle",
-        "levelString": "Achter",
-        "level": 2,
-        "player": ""
-      },
-      {
-        "color": "Schelle",
-        "levelString": "Neuner",
-        "level": 3,
-        "player": ""
-      }
-    ],
-    [
-      {
-        "color": "Laub",
-        "levelString": "Siebener",
-        "level": 1,
-        "player": ""
-      },
-      {
-        "color": "Laub",
-        "levelString": "Achter",
-        "level": 2,
-        "player": ""
-      },
-      {
-        "color": "Laub",
-        "levelString": "Neuner",
-        "level": 3,
-        "player": ""
-      },
-      {
-        "color": "Laub",
-        "levelString": "Zehner",
-        "level": 4,
-        "player": ""
-      }
-    ],
-    [
-      {
-        "color": "Laub",
-        "levelString": "Unter",
-        "level": 5,
-        "player": ""
-      },
-      {
-        "color": "Laub",
-        "levelString": "Ober",
-        "level": 6,
-        "player": ""
-      },
-      {
-        "color": "Laub",
-        "levelString": "König",
-        "level": 7,
-        "player": ""
-      },
-      { "color": "Laub", "levelString": "Sau", "level": 8, "player": "" }
-    ]
+  "rechter": {
+    "color": "Herz",
+    "levelString": "Siebener",
+    "level": 1,
+    "player": ""
+  },
+  "round1": [
+    {
+      "color": "Herz",
+      "levelString": "Siebener",
+      "level": 1,
+      "player": ""
+    },
+    {
+      "color": "Herz",
+      "levelString": "Achter",
+      "level": 2,
+      "player": ""
+    },
+    {
+      "color": "Herz",
+      "levelString": "Neuner",
+      "level": 3,
+      "player": ""
+    },
+    {
+      "color": "Herz",
+      "levelString": "Zehner",
+      "level": 4,
+      "player": ""
+    }
+  ],
+  "round2": [
+    {
+      "color": "Eichel",
+      "levelString": "Siebener",
+      "level": 1,
+      "player": ""
+    },
+    {
+      "color": "Eichel",
+      "levelString": "Achter",
+      "level": 2,
+      "player": ""
+    },
+    {
+      "color": "Eichel",
+      "levelString": "Neuner",
+      "level": 3,
+      "player": ""
+    },
+    {
+      "color": "Eichel",
+      "levelString": "Zehner",
+      "level": 4,
+      "player": ""
+    }
+  ],
+  "round3": [
+    {
+      "color": "Schelle",
+      "levelString": "Sechser",
+      "level": 0,
+      "player": ""
+    },
+    {
+      "color": "Schelle",
+      "levelString": "Siebener",
+      "level": 1,
+      "player": ""
+    },
+    {
+      "color": "Schelle",
+      "levelString": "Achter",
+      "level": 2,
+      "player": ""
+    },
+    {
+      "color": "Schelle",
+      "levelString": "Neuner",
+      "level": 3,
+      "player": ""
+    }
+  ],
+  "round4": [
+    {
+      "color": "Laub",
+      "levelString": "Siebener",
+      "level": 1,
+      "player": ""
+    },
+    {
+      "color": "Laub",
+      "levelString": "Achter",
+      "level": 2,
+      "player": ""
+    },
+    {
+      "color": "Laub",
+      "levelString": "Neuner",
+      "level": 3,
+      "player": ""
+    },
+    {
+      "color": "Laub",
+      "levelString": "Zehner",
+      "level": 4,
+      "player": ""
+    }
+  ],
+  "round5": [
+    {
+      "color": "Laub",
+      "levelString": "Unter",
+      "level": 5,
+      "player": ""
+    },
+    {
+      "color": "Laub",
+      "levelString": "Ober",
+      "level": 6,
+      "player": ""
+    },
+    {
+      "color": "Laub",
+      "levelString": "König",
+      "level": 7,
+      "player": ""
+    },
+    { "color": "Laub", "levelString": "Sau", "level": 8, "player": "" }
   ],
   "winners": ["Noah", "Hannes", "Lori", "Noah", "Roli"]
 }

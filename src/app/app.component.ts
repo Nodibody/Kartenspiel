@@ -60,11 +60,8 @@ export class AppComponent implements OnInit {
     this.host = true;
     console.log((await this.signIn()).user.uid);
     this.uuid
-      .pipe(
-        switchMap((token) => this.sessionService.createSession(token)),
-        map((session) => session.sessionId)
-      )
-      .subscribe((sessionId) => {
+      .pipe(switchMap((token) => this.sessionService.createSession(token)))
+      .subscribe(({ sessionId }) => {
         this.sessionId = sessionId;
         this.location.replaceState(`?session=${sessionId}`);
       });

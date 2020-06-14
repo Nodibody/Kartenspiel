@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { KartenTyp } from '../modelle/KartenTyp';
+import { CardType } from '../modelle/Session';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./deck.component.scss'],
 })
 export class DeckComponent implements OnInit {
-  @Input() karten: KartenTyp[];
+  @Input() karten: CardType[];
   @Input() isNextPlayer: boolean;
-  @Output() useCard: EventEmitter<KartenTyp> = new EventEmitter<KartenTyp>();
+  @Output() useCard: EventEmitter<CardType> = new EventEmitter<CardType>();
   constructor() {}
 
   ngOnInit(): void {}
@@ -18,7 +18,6 @@ export class DeckComponent implements OnInit {
   benutzeKarte(karte) {
     console.log(this.isNextPlayer);
     if (!this.isNextPlayer) return;
-    this.karten = this.karten.filter((k) => k !== karte);
     this.useCard.emit(karte);
   }
 }

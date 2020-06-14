@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { KartenTyp } from '../modelle/KartenTyp';
+import { CardType } from '../modelle/Session';
 
 @Component({
   selector: 'app-karte',
@@ -7,8 +7,8 @@ import { KartenTyp } from '../modelle/KartenTyp';
   styleUrls: ['./karte.component.scss'],
 })
 export class KarteComponent implements OnInit {
-  @Input() karte: KartenTyp;
-  @Output() benutzeKarte: EventEmitter<KartenTyp> = new EventEmitter();
+  @Input() karte: CardType;
+  @Output() benutzeKarte: EventEmitter<CardType> = new EventEmitter();
 
   constructor() {}
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayedCardType, KartenTyp } from '../modelle/KartenTyp';
+import { CardType } from '../modelle/Session';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +7,7 @@ import { PlayedCardType, KartenTyp } from '../modelle/KartenTyp';
 export class SiegerauswertungService {
   constructor() {}
 
-  public getWinner(cards: PlayedCardType[], rechter: KartenTyp): string {
+  public getWinner(cards: CardType[], rechter: Partial<CardType>): string {
     cards = cards.map((card) => {
       // Linker oder Rechter
       if (card.level === rechter.level) card.level += 100;

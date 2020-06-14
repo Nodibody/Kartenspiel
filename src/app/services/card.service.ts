@@ -1,16 +1,28 @@
 import { Injectable } from '@angular/core';
 import allCards from '../../assets/cards.json';
-import { KartenTyp } from '../modelle/KartenTyp';
+import { CardType, Color } from '../modelle/Session';
+
+const levelStrings = new Map<number, string>([
+  [0, 'Sechser'],
+  [1, 'Siebener'],
+  [2, 'Achter'],
+  [3, 'Neuner'],
+  [4, 'Zehner'],
+  [5, 'Unter'],
+  [6, 'Ober'],
+  [7, 'König'],
+  [8, 'Sau'],
+]);
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardService {
-  private cards: KartenTyp[] = allCards.map((v) => v);
+  private cards: CardType[] = allCards.map((v) => v);
   constructor() {}
 
-  public drawCards(): KartenTyp[] {
-    const cards: KartenTyp[] = [];
+  public drawCards(): CardType[] {
+    const cards: CardType[] = [];
     let index: number;
     for (let i = 0; i < 5; i++) {
       index = Math.floor(Math.random() * this.cards.length);
@@ -20,7 +32,7 @@ export class CardService {
     return cards;
   }
 
-  public drawAllCards(): KartenTyp[][] {
+  public drawAllCards(): CardType[][] {
     return [
       this.drawCards(),
       this.drawCards(),
@@ -28,13 +40,13 @@ export class CardService {
       this.drawCards(),
     ];
   }
-  public newDeck(): KartenTyp[] {
+  public newDeck(): CardType[] {
     return (this.cards = allCards.map((v) => v));
   }
 
-  public shuffle(): KartenTyp[] {
+  public shuffle(): CardType[] {
     let newPos: number;
-    let temp: KartenTyp;
+    let temp: CardType;
     for (let t = 0; t < 10; t++) {
       for (let i = this.cards.length - 1; i > 0; i--) {
         newPos = Math.floor(Math.random() * (i + 1));
@@ -44,5 +56,8 @@ export class CardService {
       }
     }
     return this.cards;
+  }
+  public getCard(color: Color, level: number): CardType {
+    return { level, color, levelString: levelStrings.get(level) };
   }
 }
