@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
 import { first, switchMap, map, catchError } from 'rxjs/operators';
-import { Session } from './modelle/Session';
+import { Session, CardType } from './modelle/Session';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSessionUnavailableComponent } from './dialogs/dialog-session-unavailable/dialog-session-unavailable.component';
 import { Observable } from 'rxjs';
@@ -18,6 +18,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  karten: CardType[] = [
+    { color: 'Herz', levelString: 'Siebener', level: 1 },
+    { color: 'Herz', levelString: 'Achter', level: 2 },
+    { color: 'Herz', levelString: 'Neuner', level: 3 },
+    { color: 'Herz', levelString: 'Zehner', level: 4 },
+  ];
   title = 'Kartenspiel';
   sessionId: string;
   host = false;

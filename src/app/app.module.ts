@@ -24,6 +24,7 @@ import { GameComponent } from './game/game.component';
 import { StartseiteComponent } from './startseite/startseite.component';
 import { DialogSessionUnavailableComponent } from './dialogs/dialog-session-unavailable/dialog-session-unavailable.component';
 import { DialogHostGoneComponent } from './dialogs/dialog-host-gone/dialog-host-gone.component';
+import { KartenMitteComponent } from './karten-mitte/karten-mitte.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DialogHostGoneComponent } from './dialogs/dialog-host-gone/dialog-host-
     StartseiteComponent,
     DialogSessionUnavailableComponent,
     DialogHostGoneComponent,
+    KartenMitteComponent,
   ],
   imports: [
     BrowserModule,

@@ -19,14 +19,8 @@ export interface PlayerCardTypes {
 }
 
 export interface CardType {
-  color: Color;
+  color: string;
   level: number;
   levelString: string;
   player?: string;
-}
-export enum Color {
-  Eichel = 'Eichel',
-  Herz = 'Herz',
-  Laub = 'Laub',
-  Schelle = 'Schelle',
 }

@@ -1,13 +1,1 @@
-<!-- <app-testing></app-testing> -->
-<app-startseite
-  *ngIf="!sessionId && !testing"
-  (sessionCreator)="createSession()"
-  (sessionJoiner)="joinSession($event)"
-></app-startseite>
-<app-game
-  *ngIf="sessionId && !testing"
-  [sessionId]="sessionId"
-  [host]="host"
-  [app]="this"
-></app-game>
-<app-testing *ngIf="testing"></app-testing>
+<app-karten-mitte></app-karten-mitte>
