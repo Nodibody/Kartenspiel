@@ -10,9 +10,5 @@ export class KartenMitteComponent implements OnInit {
   @Input() karten: CardType[];
   constructor() {}
 
-  ngOnInit(): void {
-    if (!this.karten) {
-      this.karten = [null, null, null, null];
-    }
-  }
+  ngOnInit(): void {}
 }

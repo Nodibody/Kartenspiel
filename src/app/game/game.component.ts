@@ -42,18 +42,18 @@ export class GameComponent implements OnInit {
     // User info player count / scrap game
     const sub = this.sessionService.playerCount
       .pipe(
-        map((count) => (this.playerCount = count)),
-        filter((count) => count >= 4),
-        delay(1000),
-        filter(() => !this.karten),
-        switchMap(() =>
-          this.matDialog.open(DialogHostGoneComponent).afterClosed()
-        )
+        map((count) => (this.playerCount = count))
+        // filter((count) => count >= 4),
+        // delay(5000),
+        // filter(() => !this.karten),
+        // switchMap(() =>
+        //   this.matDialog.open(DialogHostGoneComponent).afterClosed()
+        // )
       )
       .subscribe(async () => {
         sub.unsubscribe();
-        await this.router.navigateByUrl('/?');
-        location.reload();
+        // await this.router.navigateByUrl('/?');
+        // location.reload();
       });
 
     // isNextPlayer

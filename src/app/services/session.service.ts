@@ -33,6 +33,7 @@ export class SessionService {
     ).pipe(
       tap((ref: DocumentReference) => (this.sessionId = ref.id)),
       map(({ id }) => {
+        this.sessionId = id;
         this.waitForFullSession();
         return { sessionId: id };
       })

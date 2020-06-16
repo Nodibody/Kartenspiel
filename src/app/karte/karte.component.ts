@@ -21,6 +21,13 @@ export class KarteComponent implements OnInit {
   }
 
   getImgPath(): string {
+    if (
+      !this.karte ||
+      !this.karte?.color ||
+      !this.karte?.levelString ||
+      !this.karte?.level
+    )
+      return '';
     return `assets/${this.karte?.color}/${this.karte?.levelString}.PNG`;
   }
 }
