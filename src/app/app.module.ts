@@ -19,7 +19,6 @@ import { MatInputModule } from '@angular/material/input';
 import { AppComponent } from './app.component';
 import { KarteComponent } from './karte/karte.component';
 import { DeckComponent } from './deck/deck.component';
-import { TestingComponent } from './testing/testing.component';
 import { GameComponent } from './game/game.component';
 import { StartseiteComponent } from './startseite/startseite.component';
 import { DialogSessionUnavailableComponent } from './dialogs/dialog-session-unavailable/dialog-session-unavailable.component';
@@ -31,7 +30,6 @@ import { KartenMitteComponent } from './karten-mitte/karten-mitte.component';
     AppComponent,
     KarteComponent,
     DeckComponent,
-    TestingComponent,
     GameComponent,
     StartseiteComponent,
     DialogSessionUnavailableComponent,

@@ -5,8 +5,8 @@ import {
   AngularFirestoreDocument,
   DocumentReference,
 } from '@angular/fire/firestore';
-import { Observable, Subject, forkJoin, from, of, BehaviorSubject } from 'rxjs';
-import { Session, CardType, Color } from '../modelle/Session';
+import { Observable, forkJoin, from, of, BehaviorSubject } from 'rxjs';
+import { Session, CardType } from '../modelle/Session';
 import { CardService } from './card.service';
 import { map, switchMap, filter, pluck, tap } from 'rxjs/operators';
 import { subscribeOnce } from '../rxjs-operators/operators';
@@ -19,6 +19,7 @@ export class SessionService {
   public sessionId: string;
   private roundNo = 0;
   private players: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private winners: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private afs: AngularFirestore,
@@ -40,8 +41,7 @@ export class SessionService {
   // Host 1
   private waitForFullSession() {
     console.log('Waiting for full session...');
-    this.doc
-      .valueChanges()
+    this.docSession
       .pipe(
         tap(({ players }) => this.players.next(players.length)),
         filter(({ players }) => players.length >= 4),
@@ -78,33 +78,40 @@ export class SessionService {
               );
           }
         }),
-        subscribeOnce(() =>
+        switchMap(() =>
           this.sendCardsToServer(this.cardService.drawAllCards())
-        )
+        ),
+        switchMap(() => this.waitForFullRound())
       )
       .subscribe()
       .unsubscribe();
   }
   // Host 3
-  private sendCardsToServer(cards: CardType[][]) {
-    this.session.subscribe((session) =>
-      this.doc.update({
-        cards: session.players.map((player, i) => {
-          return { name: player, cards: cards[i] };
-        }),
+  private sendCardsToServer(cards: CardType[][]): Observable<void> {
+    return this.session.pipe(
+      switchMap((session) => {
+        return from(
+          this.doc.update({
+            cards: session.players.map((player, i) => {
+              return { name: player, cards: cards[i] };
+            }),
+          })
+        );
       })
     );
   }
   // Host 4
   public waitForFullRound(): Observable<string> {
-    return this.doc.valueChanges().pipe(
+    return this.docSession.pipe(
       filter((session) => session[`round${this.roundNo}`].length === 4),
       map((session) =>
         this.siegerauswertungService.getWinner(
           session[`round${this.roundNo}`],
           session.rechter
         )
-      )
+      ),
+      tap(this.winners.next),
+      subscribeOnce(() => this.startNewRound())
     );
   }
 
@@ -128,7 +135,7 @@ export class SessionService {
   }
   // Client 1
   public getCards(id: string): Observable<CardType[]> {
-    return this.doc.valueChanges().pipe(
+    return this.docSession.pipe(
       filter((session) => !!session?.cards),
       map(({ cards }) => cards.filter((v) => v.name === id)[0].cards)
     );
@@ -136,7 +143,7 @@ export class SessionService {
   public sendLevel(level: number) {
     this.doc.update({ rechter: { level } });
   }
-  public sendColor(color: Color) {
+  public sendColor(color: string) {
     this.session
       .pipe(
         // map(({ rechter }) => rechter),
@@ -150,7 +157,7 @@ export class SessionService {
   }
   // Client 2
   public waitForRechter(): Observable<Partial<CardType>> {
-    return this.doc.valueChanges().pipe(
+    return this.docSession.pipe(
       filter(
         ({ rechter }) =>
           !!(
@@ -165,9 +172,7 @@ export class SessionService {
   }
   // Client 3
   public isNextPlayer(id: string): Observable<boolean> {
-    return this.doc
-      .valueChanges()
-      .pipe(map(({ nextPlayer }) => nextPlayer === id));
+    return this.docSession.pipe(map(({ nextPlayer }) => nextPlayer === id));
   }
   // Client 4
   public sendPlayedCard(card: CardType, id: string) {
@@ -193,6 +198,13 @@ export class SessionService {
   get doc(): AngularFirestoreDocument<Partial<Session>> {
     return this.sessionsCollection.doc<Partial<Session>>(this.sessionId);
   }
+  get docSession(): Observable<Session> {
+    return this.doc.valueChanges().pipe(
+      map((session) => {
+        return { sessionId: this.sessionId, ...session };
+      })
+    );
+  }
   get session(): Observable<Session> {
     return this.doc.get().pipe(
       map((snap) => {
@@ -201,9 +213,7 @@ export class SessionService {
     );
   }
   public get playerCount(): Observable<number> {
-    return this.doc
-      .valueChanges()
-      .pipe(map((session) => session.players?.length));
+    return this.docSession.pipe(map((session) => session.players?.length));
   }
   private get nextPlayer(): Observable<string> {
     return this.doc.get({ source: 'cache' }).pipe(
@@ -217,6 +227,13 @@ export class SessionService {
         }
         return session.players[currentPlayer];
       })
+    );
+  }
+  public get playedCards(): Observable<CardType[]> {
+    return this.docSession.pipe(
+      filter((session) => !!session.roundNo),
+      filter((session) => !!session[`round${session.roundNo}`]),
+      map((session) => session[`round${session.roundNo}`])
     );
   }
 }

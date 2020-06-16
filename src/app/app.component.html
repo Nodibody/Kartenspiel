@@ -1,1 +1,11 @@
-<app-karten-mitte></app-karten-mitte>
+<app-startseite
+  *ngIf="!sessionId"
+  (sessionCreator)="createSession()"
+  (sessionJoiner)="joinSession($event)"
+></app-startseite>
+<app-game
+  *ngIf="sessionId"
+  [app]="this"
+  [host]="host"
+  [sessionId]="sessionId"
+></app-game>

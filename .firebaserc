@@ -1,14 +1,5 @@
 {
-  "targets": {
-    "watten-14294": {
-      "hosting": {
-        "Kartenspiel": [
-          "watten-14294"
-        ]
-      }
-    }
-  },
   "projects": {
-    "default": "watten-14294"
+    "default": "watten-84eb3"
   }
 }

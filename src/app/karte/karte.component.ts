@@ -21,6 +21,6 @@ export class KarteComponent implements OnInit {
   }
 
   getImgPath(): string {
-    return `assets/${this.karte.color}/${this.karte.levelString}.PNG`;
+    return `assets/${this.karte?.color}/${this.karte?.levelString}.PNG`;
   }
 }

@@ -3,8 +3,6 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SessionService } from './services/session.service';
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 import { first, switchMap, map, catchError } from 'rxjs/operators';
 import { Session, CardType } from './modelle/Session';
@@ -28,6 +26,7 @@ export class AppComponent implements OnInit {
   sessionId: string;
   host = false;
   testing: boolean;
+
   constructor(
     private route: ActivatedRoute,
     public afAuth: AngularFireAuth,

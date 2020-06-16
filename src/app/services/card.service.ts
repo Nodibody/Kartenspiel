@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import allCards from '../../assets/cards.json';
-import { CardType, Color } from '../modelle/Session';
+import { CardType } from '../modelle/Session';
 
 const levelStrings = new Map<number, string>([
   [0, 'Sechser'],
@@ -57,7 +57,7 @@ export class CardService {
     }
     return this.cards;
   }
-  public getCard(color: Color, level: number): CardType {
+  public getCard(color: string, level: number): CardType {
     return { level, color, levelString: levelStrings.get(level) };
   }
 }

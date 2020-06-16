@@ -22,6 +22,7 @@ export class GameComponent implements OnInit {
   playerCount: number;
   private sessionService: SessionService;
   isNextPlayer: Observable<boolean>;
+  playedCards: CardType[];
 
   constructor(private matDialog: MatDialog, private router: Router) {}
 
@@ -58,6 +59,10 @@ export class GameComponent implements OnInit {
     // isNextPlayer
     this.isNextPlayer = this.app.uuid.pipe(
       switchMap((token) => this.sessionService.isNextPlayer(token))
+    );
+    this.playedCards = [null, null, null, null];
+    this.sessionService.playedCards.subscribe(
+      (cards) => (this.playedCards = cards)
     );
   }
   useCard(card: CardType) {
