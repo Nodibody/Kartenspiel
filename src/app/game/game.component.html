@@ -9,3 +9,15 @@
 <div *ngIf="!karten" class="waiting">
   <h1>Warte auf volle Session ({{ playerCount }}/4)</h1>
 </div>
+
+<div>
+  Sie können sich währendessen einen Namen geben und Eine Spielerfarbe
+  auswählen. Mit dem Ok Button bestätigen.
+  <input type="text" name="vorname" id="vorname" /><br />
+
+  <input type="radio" name="Farbe" value="Rot" /> Rot<br />
+  <input type="radio" name="Farbe" value="Blau" /> Blau<br />
+  <input type="radio" name="Farbe" value="Grün" /> Grün<br />
+  <input type="radio" name="Farbe" value="Gelb" /> Gelb<br />
+  <button type="button" id="button">OK!</button>
+</div>
